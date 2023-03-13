@@ -1,7 +1,7 @@
 import discord.ext.commands
 
 from config import secret
-import handlers
+from . import handlers
 
 intents = discord.Intents.default()
 intents.members = True
@@ -19,7 +19,3 @@ async def on_scheduled_event_create(event: discord.ScheduledEvent):
 @bot.event
 async def on_scheduled_event_delete(event: discord.ScheduledEvent):
     handlers.handle_event_deleted(event)
-
-
-if __name__ == "__main__":
-    bot.run(secret.AUTH_TOKEN)

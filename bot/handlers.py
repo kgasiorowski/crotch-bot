@@ -1,6 +1,6 @@
 import discord
 
-import WOMApi
+from . import WOMApi
 from config import secret
 import json
 import os
