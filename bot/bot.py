@@ -1,6 +1,5 @@
 import discord.ext.commands
 
-from config import secret
 from . import handlers
 
 intents = discord.Intents.default()
@@ -18,4 +17,4 @@ async def on_scheduled_event_create(event: discord.ScheduledEvent):
 
 @bot.event
 async def on_scheduled_event_delete(event: discord.ScheduledEvent):
-    handlers.handle_event_deleted(event)
+    await handlers.handle_event_deleted(event)

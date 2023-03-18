@@ -27,21 +27,28 @@ async def handle_event_created(event: discord.ScheduledEvent) -> None:
         save_sotw(sotw_id)
     else:
         channel = event.guild.get_channel(secret.CHANNEL_ID)
-        await channel.send("Could not create SOTW")
+        await channel.send("Could not create SOTW :(")
         await event.delete(reason="Could not create SOTW, try to create it again.")
 
 
-def handle_event_deleted(event: discord.ScheduledEvent) -> None:
+async def handle_event_deleted(event: discord.ScheduledEvent) -> None:
     if not event.name.startswith("SOTW:"):
         return
 
+    sotw_id = load_sotw_id()
+    response = WOMApi.delete(sotw_id, secret.VERIFICATION_CODE)
 
-def save_sotw(sotw_id: int, file_name: str = 'current_sotw.json'):
+    if response != 200:
+        channel = event.guild.get_channel(secret.CHANNEL_ID)
+        await channel.send("Could not delete SOTW :(")
+
+
+def save_sotw(sotw_id: int, file_name: str = 'current_sotw.json') -> None:
     with open(secret.SOTW_PATH + file_name, 'w') as f:
         json.dump(sotw_id, f)
 
 
-def load_sotw_id(file_name: str = 'current_sotw.json'):
+def load_sotw_id(file_name: str = 'current_sotw.json') -> int | None:
     try:
         with open(secret.SOTW_PATH + file_name, 'r') as f:
             return json.load(f)
@@ -49,5 +56,5 @@ def load_sotw_id(file_name: str = 'current_sotw.json'):
         return None
 
 
-def delete_sotw(file_name: str = 'current_sotw.json'):
+def delete_sotw(file_name: str = 'current_sotw.json') -> None:
     os.remove(secret.SOTW_PATH + file_name)

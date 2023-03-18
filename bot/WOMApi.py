@@ -31,7 +31,7 @@ def delete(sotwId: int, verificationCode: str):
     endpoint = "/competitions/{}"
     params = {"verificationCode": verificationCode}
     requestUrl = __build_url(BASE_URL, endpoint, [sotwId])
-    return requests.delete(requestUrl, data=params)
+    return requests.delete(requestUrl, json=params)
 
 
 def get(sotwId: int):
@@ -44,7 +44,7 @@ def updateAllParticipants(sotwId: int, verificationCode: str):
     endpoint = "/competitions/{}/update-all"
     params = {"verificationCode": verificationCode}
     requestUrl = __build_url(BASE_URL, endpoint, [sotwId])
-    return requests.post(requestUrl, data=params)
+    return requests.post(requestUrl, json=params)
 
 
 def __build_url(baseurl: str, endpoint: str, args: list = None):
